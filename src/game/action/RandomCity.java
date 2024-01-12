@@ -1,25 +1,26 @@
 package game.action;
 
+import game.data.DataPath;
 import game.fill.Filler;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class RandomCity implements Randomable{
-    private static final String dataBase = "src/game/data/UkraineCitiesDataBase.txt";
+public class RandomCity implements Randomable {
 
+    private Random random = new Random();
+
+    //Computer get random city from database
     @Override
     public String getRandom(char firstChar) {
-        List<String> cities = new Filler().fill(new File(dataBase));
+        List<String> cities = new Filler().fill(new File(DataPath.UKRAINIAN_CITIES_PATH));
         List<String> properCities = new ArrayList<>();
         for (String city : cities) {
             if (Character.toLowerCase(city.charAt(0)) == firstChar) {
                 properCities.add(city);
             }
         }
-        Random random = new Random();
         int index = random.nextInt(properCities.size());
         return properCities.get(index);
     }

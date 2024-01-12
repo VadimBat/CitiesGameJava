@@ -1,36 +1,43 @@
 package game.action;
 
+import game.data.DataPath;
 import game.fill.Filler;
-
 import java.io.File;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-public class GameLoop implements Loopable{
-    private static final String dataBase = "src/game/data/UkraineCitiesDataBase.txt";
+public class GameLoop implements Loopable {
+    private int score = 0;
     private String lastComputerCity = null;
     private Scanner scanner = new Scanner(System.in);
+    private Randomable randomCity = new RandomCity();
+    private List<String> cities = new Filler()
+            .fill(new File(DataPath.UKRAINIAN_CITIES_PATH));
 
     @Override
     public void loop() {
+
+        System.out.println("Lets start the game! Please enter your name:");
+        String name = scanner.nextLine();
+        System.out.println("Please enter your city to start:");
+
         while (true) {
+
             String input = scanner.nextLine();
-            if (input.equals("exit")) {
-                System.out.println("Thank you! Hope it was nice game!");
-                System.exit(0);
-            }
-            List<String> cities = new Filler().fill(new File(dataBase));
+            checkExit(input, name, score);
 
             // Check is list contains entered city by user
             boolean isCorrectCity = false;
             for (String city : cities) {
                 if (city.equalsIgnoreCase(input)) {
                     isCorrectCity = true;
+                    score++;
                     break;
                 }
             }
 
+            //Print wrong city
             if (!isCorrectCity) {
                 System.out.println("Such city does not exist in the database. Please enter another city!");
                 continue;
@@ -47,10 +54,44 @@ public class GameLoop implements Loopable{
                 }
             }
 
-            Randomable randomCity = new RandomCity();
-            char lastChar = input.charAt(input.length() - 1);
-            lastComputerCity = randomCity.getRandom(lastChar);
-            System.out.println("My city:" + lastComputerCity);
+            printCity(input);
         }
+    }
+
+    //Check exit
+    private void checkExit(String input, String name, int score) {
+        if (input.equals("exit")) {
+            System.out.println("Thank you! Hope it was nice game!");
+            System.out.println("Your username: " + name);
+            System.out.println("Your score: " + score);
+            System.exit(0);
+        }
+    }
+
+    //Check is the last symbol acceptable for continue or need use before last
+    private char getLastChar(String input) {
+        List<Character> exceptionChars = Arrays.asList('и', 'ї', 'й', 'ц', 'ь', 'ъ');
+        boolean isExceptionChar = true;
+        for (int i = input.length() - 1; isExceptionChar; ) {
+            isExceptionChar = false;
+            for (Character exceptionChar : exceptionChars) {
+                if (Character.toLowerCase(input.charAt(i)) == exceptionChar) {
+                    isExceptionChar = true;
+                    i--;
+                    break;
+                }
+            }
+            if (!isExceptionChar) {
+                return input.charAt(i);
+            }
+        }
+        return input.charAt(input.length() - 1);
+    }
+
+    //Print computer city
+    private void printCity(String input) {
+        char lastChar = getLastChar(input);
+        lastComputerCity = randomCity.getRandom(lastChar);
+        System.out.println("My city:" + lastComputerCity);
     }
 }
