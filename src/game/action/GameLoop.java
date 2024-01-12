@@ -15,6 +15,9 @@ public class GameLoop implements Loopable {
     private List<String> cities = new Filler()
             .fill(new File(DataPath.UKRAINIAN_CITIES_PATH));
 
+    private List<Character> exceptionChars = Arrays
+            .asList('и', 'ї', 'й', 'ц', 'ь', 'ъ');
+
     @Override
     public void loop() {
 
@@ -40,16 +43,23 @@ public class GameLoop implements Loopable {
             //Print wrong city
             if (!isCorrectCity) {
                 System.out.println("Such city does not exist in the database. Please enter another city!");
+                score--;
                 continue;
             }
 
             // Check is the first letter correct
             if (lastComputerCity != null) {
                 char lastComputerCityChar = lastComputerCity.charAt(lastComputerCity.length() - 1);
+                for (Character exceptionChar : exceptionChars){
+                    if (lastComputerCityChar == exceptionChar){
+                        lastComputerCityChar = lastComputerCity.charAt(lastComputerCity.length() - 2);
+                    }
+                }
                 char firstInputChar = input.charAt(0);
 
                 if (Character.toLowerCase(lastComputerCityChar) != Character.toLowerCase(firstInputChar)) {
                     System.out.println("You entered city with incorrect first letter");
+                    score--;
                     continue;
                 }
             }
@@ -70,7 +80,6 @@ public class GameLoop implements Loopable {
 
     //Check is the last symbol acceptable for continue or need use before last
     private char getLastChar(String input) {
-        List<Character> exceptionChars = Arrays.asList('и', 'ї', 'й', 'ц', 'ь', 'ъ');
         boolean isExceptionChar = true;
         for (int i = input.length() - 1; isExceptionChar; ) {
             isExceptionChar = false;
