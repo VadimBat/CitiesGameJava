@@ -1,8 +1,7 @@
-package game;
+package com.game;
 
-import game.action.GameLoop;
-import game.action.GameRunner;
-import game.action.Loopable;
+
+import com.game.action.GameRunner;
 
 public class App {
     public static void main(String[] args) {

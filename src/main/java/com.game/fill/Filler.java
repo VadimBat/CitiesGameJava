@@ -1,4 +1,4 @@
-package game.fill;
+package com.game.fill;
 
 import java.io.File;
 import java.io.FileNotFoundException;

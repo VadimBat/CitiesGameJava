@@ -1,7 +1,7 @@
-package game.action;
+package com.game.action;
 
-import game.data.DataPath;
-import game.fill.Filler;
+import com.game.data.DataPath;
+import com.game.fill.Filler;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
@@ -10,7 +10,6 @@ import java.util.Scanner;
 public class GameLoop implements Loopable {
     private int score = 0;
     private String lastComputerCity = null;
-    private Scanner scanner = new Scanner(System.in);
     private Randomable randomCity = new RandomCity();
     private List<String> cities = new Filler()
             .fill(new File(DataPath.UKRAINIAN_CITIES_PATH));
@@ -19,7 +18,7 @@ public class GameLoop implements Loopable {
             .asList('и', 'ї', 'й', 'ц', 'ь', 'ъ');
 
     @Override
-    public void loop() {
+    public void loop(Scanner scanner) {
 
         System.out.println("Lets start the game! Please enter your name:");
         String name = scanner.nextLine();

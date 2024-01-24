@@ -1,7 +1,6 @@
-package game.fill;
+package com.game.fill;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 public interface Fillable {

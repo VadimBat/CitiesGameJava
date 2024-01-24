@@ -1,7 +1,8 @@
-package game.action;
+package com.game.action;
 
-import game.data.DataPath;
-import game.fill.Filler;
+import com.game.data.DataPath;
+import com.game.fill.Filler;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
